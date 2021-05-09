@@ -1,0 +1,7 @@
+Vivado Simulator 2020.1
+Time resolution is 1 ps
+0 0 1 result y x
+1 0 1 result y 0
+0 1 1 result y 0
+0 1 0 result y 1
+1 1 1 result y 0
