@@ -48,7 +48,7 @@ end
 always_ff @(posedge(clk2) or negedge(rst_n)) begin // this process works every clk2's (our generated 5Hz) 
                                                    // signal positive
     if(!rst_n)
-        out_led = 8'h00;
+        out_led <= 8'h00;
     else if(dir)
         out_led <= out_led+1;    // it shifts our leds incrementally if direction is 1
     else if (!dir)
