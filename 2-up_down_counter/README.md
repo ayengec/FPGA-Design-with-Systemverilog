@@ -39,10 +39,10 @@ Clone the repo
    ```
 <!-- ABOUT THE PROJECT -->
 ## RTL Schematic
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/up_down_counter/docs/RTL_Schematic.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/2-up_down_counter/docs/RTL_Schematic.PNG)
 
 ## Simulation Result
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/up_down_counter/docs/sim_graph.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/2-up_down_counter/docs/sim_graph.PNG)
 
 <!-- USAGE EXAMPLES -->
 ## Video
