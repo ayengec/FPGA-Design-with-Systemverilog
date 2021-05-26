@@ -18,7 +18,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Project Summary
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/Multiplexer_2in1out/docs/PRJ_Summary.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/1-Multiplexer_2in1out/docs/PRJ_Summary.PNG)
 
 You can see 3 types main subfolder as Design Sources, Constraints and Simulation Sources. It' s clearly understandable that our design is instantiated by simulation file Testbench.
 
@@ -40,13 +40,13 @@ Clone the repo
    ```
 <!-- ABOUT THE PROJECT -->
 ## RTL Schematic
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/Multiplexer_2in1out/docs/RTL_schematic.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/1-Multiplexer_2in1out/docs/RTL_schematic.PNG)
 
 ## Simulation Result
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/Multiplexer_2in1out/docs/RTL_schematic.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/1-Multiplexer_2in1out/docs/SIM_tcl_and_wave.PNG)
 
 ## Implementated Schematic
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/Multiplexer_2in1out/docs/IMPL_schematic.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/1-Multiplexer_2in1out/docs/IMPL_schematic.PNG)
 
 <!-- USAGE EXAMPLES -->
 ## Video
