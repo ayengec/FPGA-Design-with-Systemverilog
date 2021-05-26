@@ -18,7 +18,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Project Summary
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/uart_transmitter/docs/tx_hierarchy.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/4-uart_transmitter/docs/tx_hierarchy.PNG)
 
 
 ### Built With
@@ -30,7 +30,7 @@ This section should list any major frameworks that you built your project using.
 
 <!-- GETTING STARTED -->
 ## State Diagram of UART Transmitter
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/uart_transmitter/docs/FSM_transmitter.jpg)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/4-uart_transmitter/docs/FSM_transmitter.jpg)
 
 ### To clone project
 Clone the repo
@@ -39,13 +39,13 @@ Clone the repo
    ```
 <!-- ABOUT THE PROJECT -->
 ## RTL Schematic
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/uart_transmitter/docs/RTL_sch_transmitter.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/4-uart_transmitter/docs/RTL_sch_transmitter.PNG)
 
 ## Simulation Result When Data=0x7A
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/uart_transmitter/docs/only_tx_sim_wave_7a.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/4-uart_transmitter/docs/only_tx_sim_wave_7a.PNG)
 
 ## Simulation Result When Data=0xB6
-![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/uart_transmitter/docs/only_tx_sim_wave_b6.PNG)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/4-uart_transmitter/docs/only_tx_sim_wave_b6.PNG)
 
 <!-- USAGE EXAMPLES -->
 ## Video
