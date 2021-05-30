@@ -8,7 +8,7 @@
   <h3 align="center">UART RECEIVER DESIGN WITH SYSTEMVERILOG</h3>
 
   <p align="center">
-    UART_TX
+    UART RECEIVER
     <br />
     <a href="https://github.com/ayengec/FPGA-Design-with-Systemverilog/issues">Report Bug</a>
     ·
