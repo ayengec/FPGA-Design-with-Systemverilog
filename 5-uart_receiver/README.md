@@ -18,7 +18,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Project Summary
-![image](hierarcchy link)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/5-uart_receiver/docs/hierarchy_prj.PNG)
 
 
 ### Built With
@@ -29,7 +29,7 @@ This section should list any major frameworks that you built your project using.
 
 <!-- GETTING STARTED -->
 ## State Diagram of UART RECEIVER
-![image](state chart)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/5-uart_receiver/docs/state_diagram.png)
 
 ### To clone project
 Clone the repo
@@ -38,7 +38,7 @@ Clone the repo
    ```
 <!-- ABOUT THE PROJECT -->
 ## RTL Schematic
-![image](rtl_sch)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/5-uart_receiver/docs/RTL_sch.PNG)
 
 ## Simulation Result
-![image](sim_result)
+![image](https://github.com/ayengec/FPGA-Design-with-Systemverilog/blob/main/5-uart_receiver/docs/simulation.PNG)
