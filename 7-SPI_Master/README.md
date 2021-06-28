@@ -2,7 +2,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://www.google.com/url?sa=i&url=https%3A%2F%2Flearn.sparkfun.com%2Ftutorials%2Fserial-peripheral-interface-spi%2Fall&psig=AOvVaw2sTUPrCxz4L64MdBhTjV5F&ust=1624966959183000&source=images&cd=vfe&ved=0CAoQjRxqFwoTCIj5_uufuvECFQAAAAAdAAAAABAD" alt="Logo" width="100" height="180">
+  <a href="https://electrosome.com/wp-content/uploads/2017/04/SPI-Communication-300x190.png" alt="Logo" width="180" height="100">
   </a>
 
   <h3 align="center">Serial Peripheral Interface</h3>
