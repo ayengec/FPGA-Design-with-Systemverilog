@@ -2,9 +2,8 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://electrosome.com/wp-content/uploads/2017/04/SPI-Communication-300x190.png" alt="Logo" width="180" height="100">
+  <a href="https://electrosome.com/wp-content/uploads/2017/04/SPI-Communication-300x190.png" alt="Logo" width="300" height="190">
   </a>
-
   <h3 align="center">Serial Peripheral Interface</h3>
 
   <p align="center">
