@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module spi_master#(int unsigned sys_clk_freq = 100000000, int unsigned sclk_freq = 1000000, logic cpol = 0, logic cpha = 0) 
+module spi_master#(int unsigned sys_clk_freq = 100000000, int unsigned sclk_freq = 1000000, logic cpol = 0, logic cpha = 0) // cpol = polarity of clock when idle state
+                                                                                                                            // cpha = which clock edge data will be sent 0=first edge, 1= second clock edge
 (
     input   logic      clk,
     input   logic      enable,
