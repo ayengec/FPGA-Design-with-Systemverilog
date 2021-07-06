@@ -22,7 +22,6 @@
 
 
 ### Built With
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [Vivado](https://www.xilinx.com/products/design-tools/vivado.html)
 * [Basys 3](https://store.digilentinc.com/basys-3-artix-7-fpga-beginner-board-recommended-for-introductory-users/)
 * [VSCode](https://code.visualstudio.com)
