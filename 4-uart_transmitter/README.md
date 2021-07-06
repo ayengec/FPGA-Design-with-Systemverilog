@@ -24,7 +24,7 @@ PIC microcontroller architecture consists of memory organization (ram, rom, stac
 ### Built With
 This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 * [MPLAB X IDE](https://www.microchip.com/en-us/development-tools-tools-and-software/mplab-x-ide)
-* [xc8 compiler](https://www.microchip.com/en-us/development-tools-tools-and-software/mplab-xc-compilers)
+* [XC8 compiler](https://www.microchip.com/en-us/development-tools-tools-and-software/mplab-xc-compilers)
 * [Proteus](https://www.labcenter.com/)
 
 ### To clone project
