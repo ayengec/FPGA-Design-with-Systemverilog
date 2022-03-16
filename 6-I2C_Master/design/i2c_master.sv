@@ -73,7 +73,7 @@ module i2c_master#(int unsigned input_clk=100000000, int unsigned freq=400000)
             clk_counter     <= 0;
             stretch <= 0;
         end
-        else if (clk==1) begin
+        else begin
             data_clk_prev <= data_clk;
             if (clk_counter == (divider*4-1)) begin     // end of timing cycle
                 clk_counter <= 0;                       // reset timer
