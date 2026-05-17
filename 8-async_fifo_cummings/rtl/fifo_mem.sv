@@ -48,8 +48,8 @@ module fifo_mem #(
     // Synchronous write: data is captured on the rising edge of wclk
     // only when the write enable is active
     always_ff @(posedge wclk) begin
-        if (wclken) m
-            em[waddr] <= wdata;
+        if (wclken)
+            mem[waddr] <= wdata;
     end
 
     // Asynchronous (combinational) read: no clock dependency
