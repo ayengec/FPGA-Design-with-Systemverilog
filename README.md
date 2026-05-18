@@ -11,7 +11,7 @@ The projects are ordered from basic combinational logic to advanced end-to-end i
 | 1 | **Multiplexer (2-in-1-out)** | Basic combinational logic | `always_comb`, Routing |
 | 2 | **Up/Down Counter** | Sequential logic design | Synchronous resets, Edge detection |
 | 3 | **Finite State Machine (FSM)** | Moore/Mealy machine examples | State transitions, Control logic |
-| 4 | **UART Transmitter** | Asynchronous serial transmission | **Datapath / Control Path separation**, 2-Block FSM |
+| 4 | **UART Transmitter** | Asynchronous serial transmission |  Baud Generator, Transmit Logic |
 | 5 | **UART Receiver** | Serial data recovery and sampling | Over-sampling, Error detection (Parity/Stop) |
 | 6 | **I2C Master** | Multi-device serial communication | Clock stretching, Bidirectional `inout` (SDA/SCL) |
 | 7 | **SPI Master** | High-speed synchronous serial | CPOL/CPHA modes, Shift registers |
