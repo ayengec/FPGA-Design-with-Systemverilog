@@ -38,60 +38,79 @@ module uart_transmitter#(parameter DATA_WIDTH_NUMBER=8, STOP_BITS_NUMBER=2)
             STOP
     } state_t;
 
-    state_t state;
+    state_t state, next_state;
     
     shortint unsigned data_cnt;  // to check how many data_in bits remaining
     shortint unsigned stop_cnt;  // to check how many stop bits must be inserted
 
-    always_ff @( posedge(tx_clk) or negedge(rst_n) ) begin
+    // ==========================================
+    // 1. CONTROL PATH (Next State & Control Logic)
+    // ==========================================
+    always_ff @(posedge tx_clk or negedge rst_n) begin
+        if (!rst_n) state <= IDLE;
+        else        state <= next_state;
+    end
+
+    always_comb begin
+        next_state = state; // Default state assignment
+        tx_done    = 1'b0;  // Default flag assignment
+
+        case(state)
+            IDLE: begin
+                if (tx_start) next_state = START;
+            end
+            START: begin
+                next_state = DATA;
+            end
+            DATA: begin
+                if (data_cnt == DATA_WIDTH_NUMBER) next_state = STOP;
+            end
+            STOP: begin
+                if (stop_cnt == STOP_BITS_NUMBER - 1) begin
+                    tx_done = 1'b1;
+                    next_state = IDLE;
+                end
+            end
+        endcase
+    end
+
+    // ==========================================
+    // 2. DATAPATH (Data Routing and Counters)
+    // ==========================================
+    always_ff @(posedge tx_clk or negedge rst_n) begin
         if (!rst_n) begin
-            state <= IDLE;      // FSM waiting in IDLE state until tx_start triggered
-            tx_done <= 1'b0;
-            tx_dout <= 1'b1;    // tx_dout line must be high if unused
-        end
-        else begin
-            unique case (state)
-    
-                IDLE:begin
-                tx_done <= 1'b0;
+            tx_dout  <= 1'b1;
+            data_cnt <= 0;
+            stop_cnt <= 0;
+        end else begin
+            case(state)
+                IDLE: begin
                     if (tx_start) begin         
-                        state <= START;
-                        tx_dout <= 1'b0;    // if FSM triggered, first start bit inserted as '0' throughout 1 baud clock
-                        data_cnt <= 1;      // data_cnt set to 1 because first index of data_in inserted in START state
-                    end
-                    else begin
-                        tx_dout <= 1'b1;    // if FSM doesn't triggered, tx_dout must be high
+                        tx_dout  <= 1'b0;    // Insert start bit (0)
+                        data_cnt <= 1;       // data_cnt starts from 1 since data_in[0] is inserted in START state
+                    end else begin
+                        tx_dout  <= 1'b1;    // tx_dout must be high if unused
                         stop_cnt <= 0;
                     end
                 end
-    
-                START:begin
-                    state   <= DATA;        // after the START state, FSM automatically passes to DATA state
-                    tx_dout <= data_in[0];  // first data bit will be insterted to tx_dout in 
-                                            // same baud clock at the beginning of the DATA state throughout 1 baud clock
+                
+                START: begin
+                    tx_dout <= data_in[0];   // First data bit inserted in the same baud clock
                 end
-    
-                DATA:begin
-    
+                
+                DATA: begin
                     if (data_cnt == DATA_WIDTH_NUMBER) begin 
-                        state <= STOP;
-                        tx_dout  <= 1'b1;
-                    end
-                    else begin
-                        tx_dout  <= data_in[data_cnt]; // data_in[0] was inserted previous state. 
-                                                       // In this state, remainings will be put sequentially.
-                        data_cnt <= data_cnt+1;
+                        tx_dout <= 1'b1;     // Data transmission completed, insert STOP bit
+                    end else begin
+                        tx_dout  <= data_in[data_cnt]; // Transmit remaining bits sequentially
+                        data_cnt <= data_cnt + 1;
                     end
                 end
-    
-                STOP:begin
-                    if (stop_cnt == STOP_BITS_NUMBER-1) begin
-                        tx_done <= 1'b1;
-                        state <= IDLE;
-                    end
-                    else begin
-                        tx_dout  <= 1'b1;           // stop bits are added as many as they are set
-                        stop_cnt <= stop_cnt+1;
+                
+                STOP: begin
+                    if (stop_cnt != STOP_BITS_NUMBER - 1) begin
+                        tx_dout  <= 1'b1;    // Stop bits are added as many as they are set       
+                        stop_cnt <= stop_cnt + 1;
                         data_cnt <= 1;
                     end
                 end            
