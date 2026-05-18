@@ -26,6 +26,3 @@ The projects are ordered from basic combinational logic to advanced end-to-end i
 * **Language:** SystemVerilog (IEEE 1800)
 * **Target Platforms:** Vendor-agnostic (Synthesizable for Xilinx, Intel/Altera, Gowin, ASIC flows)
 * **Verification:** Comprehensive self-checking testbenches using Verilator / Xcelium / Questa.
-
----
-*Created by [ayengec](https://github.com/ayengec) as a demonstration of production-ready RTL design capabilities.*
