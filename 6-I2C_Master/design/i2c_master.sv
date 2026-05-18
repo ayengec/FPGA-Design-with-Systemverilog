@@ -66,7 +66,7 @@ module i2c_master#(int unsigned input_clk=100000000, int unsigned freq=400000)
         STOP
     } state_t;
 
-    state_t state;
+    state_t state, next_state;
     always_ff @(posedge(clk) or negedge(rst_n)) begin
 
         if(!rst_n) begin
@@ -114,6 +114,37 @@ module i2c_master#(int unsigned input_clk=100000000, int unsigned freq=400000)
     end
         
 
+    // ==========================================
+    // 1. CONTROL PATH (Next State Logic)
+    // ==========================================
+    always_comb begin
+        next_state = state;
+        unique case(state) 
+            READY:    if (enable) next_state = START;
+            START:    next_state = COMMAND;
+            COMMAND:  if (bit_cnt == 0) next_state = SLV_ACK1;
+            SLV_ACK1: if (addr_rw[0] == 0) next_state = WRITE; else next_state = READ;
+            WRITE:    if (bit_cnt == 0) next_state = SLV_ACK2;
+            READ:     if (bit_cnt == 0) next_state = MSTR_ACK;
+            SLV_ACK2: begin
+                if (enable) begin
+                    if (addr_rw == {slv_addr, RnW}) next_state = WRITE;
+                    else next_state = START;
+                end else next_state = STOP;
+            end
+            MSTR_ACK: begin
+                if (enable) begin
+                    if (addr_rw == {slv_addr , RnW}) next_state = READ;
+                    else next_state = START;
+                end else next_state = STOP;
+            end
+            STOP:     next_state = READY;
+        endcase
+    end
+
+    // ==========================================
+    // 2. DATAPATH & STATE REGISTER (Data Routing & Counters)
+    // ==========================================
     always_ff @(posedge(clk) or negedge(rst_n)) begin: data_transaction_machine
         if(!rst_n) begin
             state <= READY;             // reset asserted
@@ -126,161 +157,87 @@ module i2c_master#(int unsigned input_clk=100000000, int unsigned freq=400000)
         end
         else if (clk) begin
             if (data_clk==1 & data_clk_prev==0) begin           // data clocking rising edge
+                state <= next_state; // <-- STATE UPDATE
+                
                 unique case(state) 
-
                     READY:begin                                       
                         if (enable) begin
                             busy    <= 1;
                             addr_rw <= {slv_addr, RnW};         // concatenation slvaddr+RnW
                             data_tx <= data_wr;                 // store requested data to write
-                            state   <= START; 
-                        end
-                        else begin                              // if it isnt enabled, wait IDLE
+                        end else begin                              // if it isnt enabled, wait IDLE
                             busy  <= 0;
-                            state <= READY;
                         end
                     end
-
                     START:begin                                 // Write first MSB bit to sda line
                         busy <= 1;
                         sda_int <= addr_rw[bit_cnt];
-                        state   <= COMMAND;                     // Go to COMMAND state to write remaining bits
                     end
-
                     COMMAND:begin                               // Write slave address + RnW and goto wait slave ack
                         if (bit_cnt == 0) begin
                             sda_int <= 1;
                             bit_cnt <= 7;
-                            state   <= SLV_ACK1;
-                        end
-                        else begin
+                        end else begin
                             bit_cnt <= bit_cnt -1;
                             sda_int <= addr_rw[bit_cnt-1];
-                            state   <= COMMAND;
                         end
                     end
-
                     SLV_ACK1:begin
                         if (addr_rw[0] == 0) begin              // If WRITE COMMAND
                             sda_int <= data_tx[bit_cnt];        // Write first bit of data
-                            state   <= WRITE;                   // Go to Write state
-                        end
-                        else begin
+                        end else begin
                             sda_int <= 1;                       // If it is not WRITE COMMAND, release SDA
-                            state   <= READ;                    // and go to RD state
                         end
                     end
-
                     WRITE:begin                                 // Write data state
                         busy <= 1;
                         if (bit_cnt == 0) begin
                             sda_int <= 1;
                             bit_cnt <= 7;
-                            state   <= SLV_ACK2;
-                        end
-                        else begin
+                        end else begin
                             bit_cnt <= bit_cnt -1;
                             sda_int <= data_tx[bit_cnt-1];      // write all 8 bit datas to sda line
-                            state   <= WRITE;
                         end
                     end
-
                     READ:begin                                 // if request type is READ
                         busy <= 1;
                         if (bit_cnt == 0) begin
-                            if (enable & (addr_rw == {slv_addr , RnW} )) begin
-                                sda_int <= 0;
-                            end
-                            else begin
-                                sda_int <= 1;
-                            end
+                            if (enable & (addr_rw == {slv_addr , RnW} )) sda_int <= 0;
+                            else sda_int <= 1;
                             bit_cnt <= 7;
                             rd_data <= data_rx;
-                            state   <= MSTR_ACK;
-                        end
-                        else begin
+                        end else begin
                             bit_cnt <= bit_cnt -1;
-                            state   <= READ;
                         end
                     end
-
                     SLV_ACK2:begin                              // ack2= after address written process
                         if (enable) begin                       // ack of write data process
                             busy <= 0;
                             addr_rw <= {slv_addr, RnW};
                             data_tx <= data_wr;
-
-                            if (addr_rw == {slv_addr, RnW}) begin
-                                sda_int <= data_wr[bit_cnt];
-                                state <= WRITE;
-                            end
-                            else begin
-                                state <= START;
-                            end
+                            if (addr_rw == {slv_addr, RnW}) sda_int <= data_wr[bit_cnt];
                         end
-                        else begin
-                            state <= STOP;
-                        end
-                        
                     end
-
                     MSTR_ACK:begin                                  // if reads data from slave, master must give ack to slave
                         if (enable == 1) begin
                             busy <= 0;
                             addr_rw <= {slv_addr, RnW};
                             data_tx <= data_wr;
-
-                            if (addr_rw == {slv_addr , RnW}) begin
-                                sda_int <= 1;
-                                state <= READ;
-                            end
-                            else begin
-                                state <= START;
-                            end
+                            if (addr_rw == {slv_addr , RnW}) sda_int <= 1;
                         end
-                        else begin
-                            state <= STOP;
-                        end
-
                     end
-
                     STOP:begin                              // generate stop condition
                         busy  <= 0;
-                        state <= READY;
                     end
-
                 endcase
             end            
-
             else if (data_clk==0 & data_clk_prev==1) begin      // in every data clock falling edge  
                 case(state)                                     // This machine checks protocol checks
-                    START:begin                                 
-                        if(!scl_enable) begin
-                            scl_enable <= 1;
-                            nAck <= 0;
-                        end
-                    end
-
-                    SLV_ACK1:begin                              // if slave doesnt give ack, Raise nAck flag
-                        if (!(sda===0) | nAck) begin
-                            nAck <= 1;
-                        end
-                    end
-
-                    READ:begin
-                        data_rx[bit_cnt] <= sda;
-                    end
-
-                    SLV_ACK2:begin
-                        if (!(sda===0) | nAck) begin
-                            nAck <= 1;
-                        end
-                    end
-
-                    STOP:begin
-                        scl_enable <= 0;
-                    end
-
+                    START:    if(!scl_enable) begin scl_enable <= 1; nAck <= 0; end
+                    SLV_ACK1: if (!(sda===0) | nAck) nAck <= 1;
+                    READ:     data_rx[bit_cnt] <= sda;
+                    SLV_ACK2: if (!(sda===0) | nAck) nAck <= 1;
+                    STOP:     scl_enable <= 0;
                 endcase
                 
             end
